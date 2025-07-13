@@ -10,21 +10,19 @@ class BotConfig:
     # OpenAI Configuration
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
     
-    # Database Configuration
-    DATABASE_PATH: str = "finance_bot.db"
-    
-    # Feature Flags
-    ENABLE_IMAGE_PROCESSING: bool = True
-    ENABLE_GROUP_FEATURES: bool = True
-    ENABLE_EXPORT: bool = True
-    
-    # Limits
-    MAX_TRANSACTIONS_PER_EXPORT: int = 1000
-    MAX_IMAGE_SIZE_MB: int = 10
+    # Supabase Configuration
+    SUPABASE_URL: str = os.getenv("SUPABASE_URL", "")
+    SUPABASE_KEY: str = os.getenv("SUPABASE_KEY", "")
     
     def validate(self):
         """Validate configuration"""
         if not self.BOT_TOKEN:
             raise ValueError("TELEGRAM_BOT_TOKEN is required")
-        if not self.OPENAI_API_KEY and self.ENABLE_IMAGE_PROCESSING:
+        if not self.OPENAI_API_KEY:
             raise ValueError("OPENAI_API_KEY is required for image processing")
+        if not self.SUPABASE_URL or not self.SUPABASE_KEY:
+            raise ValueError("SUPABASE_URL and SUPABASE_KEY are required for Supabase database")
+
+# Usage example:
+config = BotConfig()
+config.validate()
